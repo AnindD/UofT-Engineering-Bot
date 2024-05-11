@@ -31,8 +31,14 @@ async def on_message(message):
         return 
     if "Zaeem" in message.content:
         await channel.send("Zaeem eats lots of fish")
+    if "Anindit" in message.content:
+        await channel.send("Anindit? more like :nerd:")
+    if "Chris" in message.content:
+        await channel.send("By definition, Chris is by definition an intellectual")
+    if "Uzair" in message.content:
+        await channel.send("Uzair? Bro is the most clutch up man on this earth")
+    if "Mohamed" in message.content:
+        await channel.send("Mohamed, a man who enjoys the slumber of night")
     await bot.process_commands(message)
-
-
 
 bot.run(TOKEN)
