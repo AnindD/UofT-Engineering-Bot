@@ -57,6 +57,8 @@ async def Pingloop(ctx, member: Member = None):
     await ctx.send("This is not a real number")
   if loop_Counter < 0:
     await ctx.send("Negative number is invalid")
+  elif loop_Counter > 20:
+     await ctx.send("The amount of pings is capped at 20!")
   else: 
     loop_Start = 0
     while (loop_Start < loop_Counter):
