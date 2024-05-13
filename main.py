@@ -2,7 +2,7 @@ from typing import Final
 import os 
 from dotenv import load_dotenv
 from discord.ext import commands
-from discord import Intents, Client, Message, Member
+from discord import Intents, Client, Message, Embed, Member
 import asyncio 
 # Load our individual token
 load_dotenv()
@@ -35,7 +35,15 @@ async def Name(ctx, member: Member = None):
       await ctx.send("Next time say something instead of staying quiet")
    await ctx.send(f"{member.mention} {str(msg.content)}")
 
-
+@bot.command()
+async def About(ctx):
+   embed = Embed(
+      title="About",
+      description="Hello, I am the *UofT Engineer* and I will be your personal assistant in your server!",
+      color=800080
+   )
+   embed.set_image(url="https://utcsp.utoronto.ca/wp-content/uploads/2023/04/cropped-utcsp-icon-1.png")
+   await ctx.send(embed=embed)
 
 
 @bot.event
