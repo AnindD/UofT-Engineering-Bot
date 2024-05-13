@@ -25,13 +25,18 @@ async def Test(ctx):
     await ctx.send("Hello, I am the UofT Engineer")
 
 @bot.command()
-async def Zaeem(ctx):
+async def Name(ctx, member: Member = None):
+   if member == None:
+      member = ctx.author
    try: 
-    await ctx.send("Zaeem? What about him?")
+    await ctx.send(f"{member.name}? What about him?")
     msg = await bot.wait_for("message", timeout=15, check=lambda message: message.author == ctx.author and message.channel == ctx.channel)
    except asyncio.TimeoutError():
       await ctx.send("Next time say something instead of staying quiet")
-   await ctx.send(f"<@694699751010205810> {str(msg.content)}")
+   await ctx.send(f"{member.mention} {str(msg.content)}")
+
+
+
 
 @bot.event
 async def on_message(message):
