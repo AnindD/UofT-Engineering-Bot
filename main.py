@@ -46,14 +46,6 @@ async def About(ctx):
    await ctx.send(embed=embed)
 
 
-@bot.event
-async def on_message(message):
-    channel = message.channel
-    if message.author == bot.user:
-       return None; 
-    await bot.process_commands(message)
-
-
 @bot.command()
 async def Pingloop(ctx, member: Member = None):
   if member == None:
@@ -76,6 +68,24 @@ async def Pingloop(ctx, member: Member = None):
     while (loop_Start < loop_Counter):
       await ctx.send(member.mention)
       loop_Start = loop_Start + 1  
+
+
+@bot.event
+async def on_member_join(member):
+   await member.send("Welcome to the server!")
+   await bot.process_commands(member)
+
+@bot.event
+async def on_member_leave(member):
+   await member.send("We hope you enjoyed the server!")
+   await bot.process_commands(member)
+
+@bot.event
+async def on_message(message):
+    channel = message.channel
+    if message.author == bot.user:
+       return None; 
+    await bot.process_commands(message)
 
 
 bot.run(TOKEN)
