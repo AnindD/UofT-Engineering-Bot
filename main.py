@@ -39,11 +39,12 @@ async def Name(ctx, member: Member = None):
 async def About(ctx):
    embed = Embed(
       title="About",
-      description="Hello, I am the *UofT Engineer* and I will be your personal assistant in your server!",
+      description="Hello, I am the **UofT Engineer** and I will be your personal assistant in your server!",
       color=800080
    )
    embed.set_image(url="https://utcsp.utoronto.ca/wp-content/uploads/2023/04/cropped-utcsp-icon-1.png")
    await ctx.send(embed=embed)
+
 
 
 @bot.command()
