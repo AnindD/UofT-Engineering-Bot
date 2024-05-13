@@ -24,14 +24,14 @@ async def on_read():
 async def Test(ctx):
     await ctx.send("Hello, I am the UofT Engineer")
 
-bot.command()
+@bot.command()
 async def Zaeem(ctx):
    try: 
     await ctx.send("Zaeem? What about him?")
     msg = await bot.wait_for("message", timeout=15, check=lambda message: message.author == ctx.author and message.channel == ctx.channel)
    except asyncio.TimeoutError():
       await ctx.send("Next time say something instead of staying quiet")
-   await ctx.send(f"<@694699751010205810> {msg}")
+   await ctx.send(f"<@694699751010205810> {str(msg.content)}")
 
 @bot.event
 async def on_message(message):
