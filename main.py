@@ -24,21 +24,20 @@ async def on_read():
 async def Test(ctx):
     await ctx.send("Hello, I am the UofT Engineer")
 
+bot.command()
+async def Zaeem(ctx):
+   try: 
+    await ctx.send("Zaeem? What about him?")
+    msg = await bot.wait_for("message", timeout=15, check=lambda message: message.author == ctx.author and message.channel == ctx.channel)
+   except asyncio.TimeoutError():
+      await ctx.send("Next time say something instead of staying quiet")
+   await ctx.send(f"<@694699751010205810> {msg}")
+
 @bot.event
 async def on_message(message):
     channel = message.channel
     if message.author == bot.user:
-        return 
-    if "Zaeem" in message.content:
-        await channel.send("Zaeem eats lots of fish")
-    if "Anindit" in message.content:
-        await channel.send("Anindit? more like :nerd:")
-    if "Chris" in message.content:
-        await channel.send("By definition, Chris is by definition an intellectual")
-    if "Uzair" in message.content:
-        await channel.send("Uzair? Bro is the most clutch up man on this earth")
-    if "Mohamed" in message.content:
-        await channel.send("Mohamed, a man who enjoys the slumber of night")
+       return None; 
     await bot.process_commands(message)
 
 
