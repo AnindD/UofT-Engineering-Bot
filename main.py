@@ -4,6 +4,7 @@ from dotenv import load_dotenv
 from discord.ext import commands
 from discord import Intents, Client, Message, Embed, Member
 import asyncio 
+import math
 # Load our individual token
 load_dotenv()
 TOKEN: Final[str] = os.getenv('DISCORD_TOKEN')
@@ -44,6 +45,60 @@ async def About(ctx):
    )
    embed.set_image(url="https://utcsp.utoronto.ca/wp-content/uploads/2023/04/cropped-utcsp-icon-1.png")
    await ctx.send(embed=embed)
+
+@bot.command()
+async def Calculator(ctx): 
+  embed = Embed(
+    title="Calculator", 
+    description="Let x and y represent two numbers you will input into the calculator.\n\n!Testmath - Run this command if you don't understand the format.\n!Add x y\n!Subtract x y\n!Multiply x y\n!Divide x y\n!Exp x y\n!Sin x\n!Cos x\n!Tan x")
+  await ctx.send(embed=embed)
+
+# Each operation as a particular command. 
+@bot.command()
+async def Testmath(ctx):
+  await ctx.send("!Add 4 4")
+  addition = lambda x, y: x + y
+  await ctx.send(addition(4,4))
+
+@bot.command()
+async def Add(ctx, x:float,y:float):
+  addition = lambda x, y: x + y
+  await ctx.send(addition(x, y))  
+
+@bot.command()
+async def Subtract(ctx, x:float, y:float):
+  subtraction = lambda x, y: x - y
+  await ctx.send(subtraction(x, y))
+
+@bot.command()
+async def Multiply(ctx, x:float, y:float):
+  multiplication = lambda x, y: x*y
+  await ctx.send(multiplication(x, y))
+
+@bot.command()
+async def Divide(ctx, x:float, y:float):
+  division = lambda x, y: x/y
+  await ctx.send(division(x, y))
+
+@bot.command()
+async def Exp(ctx, x:float, y:float):
+  exponential = lambda x, y: x**y
+  await ctx.send(exponential(x, y))
+
+@bot.command()
+async def Sin(ctx, x:float):
+  sin = lambda x: math.sin(math.radians(x)) 
+  await ctx.send(sin(x))
+
+@bot.command()
+async def Cos(ctx, x:float):
+  cos = lambda x: math.cos(math.radians(x))
+  await ctx.send(cos(x))
+  
+@bot.command()
+async def Tan(ctx, x:float):
+  tan = lambda x: math.tan(math.radians(x))
+  await ctx.send(tan(x))
 
 
 
