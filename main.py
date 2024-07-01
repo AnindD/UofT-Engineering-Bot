@@ -109,8 +109,6 @@ async def Tan(ctx, x:float):
   tan = lambda x: math.tan(math.radians(x))
   await ctx.send(tan(x))
 
-
-
 @bot.command()
 async def Pingloop(ctx, member: Member = None):
   if member == None:
@@ -193,12 +191,15 @@ async def leaderboard(ctx):
         await ctx.send("No users on the leaderboard yet.")
         return
 
-    leaderboard_text = "**XP Leaderboard:**\n"
+    leaderboard_text = ""
     for i, (user_id, xp) in enumerate(results, 1):
         user = bot.get_user(user_id)
         username = user.name if user else f"User {user_id}"
         leaderboard_text += f"{i}. {username}: {xp} XP\n"
-
-    await ctx.send(leaderboard_text)
+    embed = Embed(
+       title="**XP Leaderboard**",
+       description=leaderboard_text,
+    )
+    await ctx.send(embed=embed)
 
 bot.run(TOKEN)
