@@ -5,11 +5,20 @@ from discord.ext import commands
 from discord import Intents, Client, Message, Embed, Member
 import asyncio 
 import math
+import sqlite3
+import random
+import time
 # Load our individual token
 load_dotenv()
 TOKEN: Final[str] = os.getenv('DISCORD_TOKEN')
 print(TOKEN)
 
+# Set up SQLite Database
+conn = sqlite3.connect('xp.db')
+c = conn.cursor()
+c.execute('''CREATE TABLE IF NOT EXISTS users
+             (id INTEGER PRIMARY KEY, xp INTEGER, last_message REAL)''')
+conn.commit()
 
 # Setup our bot 
 intents = Intents.all()
@@ -136,12 +145,60 @@ async def on_member_leave(member):
    await member.send("We hope you enjoyed the server!")
    await bot.process_commands(member)
 
+XP_PER_MESSAGE = 15
+COOLDOWN = 60
+
 @bot.event
 async def on_message(message):
     channel = message.channel
     if message.author == bot.user:
        return None; 
+    c.execute("SELECT * FROM users WHERE id=?", (message.author.id,))
+    user = c.fetchone()
+    if user is None:
+        c.execute("INSERT INTO users VALUES (?, ?, ?)", (message.author.id, 0, 0))
+        conn.commit()
+        user = (message.author.id, 0, 0)
+
+    # Check cooldown
+    current_time = time.time()
+    if current_time - user[2] > COOLDOWN:
+        # Update XP
+        new_xp = user[1] + XP_PER_MESSAGE + random.randint(1, 5)
+        c.execute("UPDATE users SET xp=?, last_message=? WHERE id=?", 
+                  (new_xp, current_time, message.author.id))
+        conn.commit()
     await bot.process_commands(message)
 
+
+@bot.command()
+async def rank(ctx, member: Member = None):
+    if member is None:
+        member = ctx.author
+
+    c.execute("SELECT xp FROM users WHERE id=?", (member.id,))
+    result = c.fetchone()
+    if result is None:
+        await ctx.send(f"{member.name} has not earned any XP yet.")
+    else:
+        xp = result[0]
+        await ctx.send(f"{member.name} has {xp} XP.")
+
+@bot.command()
+async def leaderboard(ctx):
+    c.execute("SELECT id, xp FROM users ORDER BY xp DESC LIMIT 10")
+    results = c.fetchall()
+
+    if not results:
+        await ctx.send("No users on the leaderboard yet.")
+        return
+
+    leaderboard_text = "**XP Leaderboard:**\n"
+    for i, (user_id, xp) in enumerate(results, 1):
+        user = bot.get_user(user_id)
+        username = user.name if user else f"User {user_id}"
+        leaderboard_text += f"{i}. {username}: {xp} XP\n"
+
+    await ctx.send(leaderboard_text)
 
 bot.run(TOKEN)
