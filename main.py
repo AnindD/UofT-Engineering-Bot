@@ -34,6 +34,20 @@ async def on_read():
 async def Test(ctx):
     await ctx.send("Hello, I am the UofT Engineer")
 
+
+@bot.command()
+async def About(ctx):
+  embed = Embed(
+    title="About", 
+    url="https://discord.com/api/oauth2/authorize?client_id=942566762787000340&permissions=8&scope=bot",
+    description="Hello and thank you for using Cognition. This bot is fully programmed using Python and the help of the Discord API manual along with numerous online tutorials. If you would like to invite this bot to another server please click the link in the title of this embed.", 
+    color=0x4dff4d
+  )
+  embed.set_image(url="https://www.videogameschronicle.com/files/2021/05/discord-new-logo.jpg")
+  await ctx.send(embed=embed)
+
+
+
 @bot.command()
 async def Name(ctx, member: Member = None):
    if member == None:
